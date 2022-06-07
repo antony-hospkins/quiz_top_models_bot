@@ -9,7 +9,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Decrypt large secret
-        run: .creds.json
+        with: 
+          files: .creds.json
         env:
             project_id: ${{ secrets.GS_PROJECT_ID }}
             private_key_id: ${{ secrets.GS_PRIVATE_KEY_ID }}
