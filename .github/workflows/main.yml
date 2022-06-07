@@ -1,19 +1,21 @@
-on: [push]
-name: variable substitution in json
+name: Workflows with large secrets
+
+on: push
 
 jobs:
-build:
+  my-job:
+    name: My Job
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: microsoft/variable-substitution@v1 
-    with:
-        files: '.creds.json'
-    env:
-        project_id: ${{ secrets.GS_PROJECT_ID }}
-        private_key_id: ${{ secrets.GS_PRIVATE_KEY_ID }}
-        private_key: ${{ secrets.GS_PRIVATE_KEY }}
-        client_email": ${{ secrets.GS_CLIENT_EMAIL }}
-        client_id": ${{ secrets.GS_CLIEND_ID }}
-        client_x509_cert_url": ${{  sectets.GS_CLIEND_X509_CERT_URL }}
-        
+      - uses: actions/checkout@v3
+      - name: Decrypt large secret
+#         run: ./.github/scripts/decrypt_secret.sh
+        with:
+            files: .creds.json
+        env:
+            project_id: ${{ secrets.GS_PROJECT_ID }}
+            private_key_id: ${{ secrets.GS_PRIVATE_KEY_ID }}
+            private_key: ${{ secrets.GS_PRIVATE_KEY }}
+            client_email": ${{ secrets.GS_CLIENT_EMAIL }}
+            client_id": ${{ secrets.GS_CLIEND_ID }}
+            client_x509_cert_url": ${{  sectets.GS_CLIEND_X509_CERT_URL }}
