@@ -11,6 +11,7 @@ jobs:
       - name: Decrypt large secret
         with: 
           files: .creds.json
+        uses: actions/checkout@v3
         env:
             project_id: ${{ secrets.GS_PROJECT_ID }}
             private_key_id: ${{ secrets.GS_PRIVATE_KEY_ID }}
@@ -18,3 +19,4 @@ jobs:
             client_email: ${{ secrets.GS_CLIENT_EMAIL }}
             client_id: ${{ secrets.GS_CLIEND_ID }}
             client_x509_cert_url: ${{  secrets.GS_CLIEND_X509_CERT_URL }}
+        
