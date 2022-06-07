@@ -16,4 +16,4 @@ jobs:
             private_key: ${{ secrets.GS_PRIVATE_KEY }}
             client_email: ${{ secrets.GS_CLIENT_EMAIL }}
             client_id: ${{ secrets.GS_CLIEND_ID }}
-            client_x509_cert_url: ${{  sectets.GS_CLIEND_X509_CERT_URL }}
+            client_x509_cert_url: ${{  secrets.GS_CLIEND_X509_CERT_URL }}
