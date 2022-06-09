@@ -7,12 +7,19 @@ jobs:
     name: My Job
     runs-on: ubuntu-latest
     steps:
-    - name: Hello world action
-      with: # Set the secret as an input
+      - uses: actions/checkout@v3
+      - name: Decrypt large secret
+        run: .creds.json
+        env:
             project_id: ${{ secrets.GS_PROJECT_ID }}
             private_key_id: ${{ secrets.GS_PRIVATE_KEY_ID }}
             private_key: ${{ secrets.GS_PRIVATE_KEY }}
             client_email: ${{ secrets.GS_CLIENT_EMAIL }}
             client_id: ${{ secrets.GS_CLIEND_ID }}
             client_x509_cert_url: ${{  secrets.GS_CLIEND_X509_CERT_URL }}
+      # This command is just an example to show your secret being printed
+      # Ensure you remove any print statements of your secrets. GitHub does
+      # not hide secrets that use this workaround.
+      - name: Test printing your secret (Remove this step in production)
+        run: cat .creds.json
         
