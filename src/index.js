@@ -1,6 +1,7 @@
 const fs = require('fs')
 const { Telegraf, Markup } = require('telegraf')
 const LocalSession = require('telegraf-session-local')
+const testDataToTable = require('../tests/testGoogleSheets')
 require('dotenv').config()
 const { messages } = require('./messages/messages')
 const writeAnswers = require('./writeAnswers')
@@ -10,14 +11,25 @@ const bot = new Telegraf(process.env.BOT_TOKEN)
 bot.use((new LocalSession({ database: 'session.json' })).middleware())
 
 bot.start(async (ctx) => {
-	ctx.session.current_step = 'READY'
+	// testDataToTable()
+	
+	// ctx.session.current_step = 'READY'
+	// ctx.session.userData = {
+	// 	name: `${ctx.message?.from?.first_name} ${ctx.message?.from?.last_name}`,
+	// 	username: ctx.message?.from?.username,
+	// 	id: ctx.message?.from?.id
+	// }
+	// await ctx.replyWithPhoto({ source: messages.start_step.photo })
+	// return ctx.reply(messages.start_step.message)
+
+	ctx.session.current_step = 'AGE'
 	ctx.session.userData = {
 		name: `${ctx.message?.from?.first_name} ${ctx.message?.from?.last_name}`,
 		username: ctx.message?.from?.username,
 		id: ctx.message?.from?.id
 	}
-	await ctx.replyWithPhoto({ source: messages.start_step.photo })
-	return ctx.reply(messages.start_step.message)
+	await ctx.replyWithPhoto({ source: messages.age.photo })
+	return ctx.reply(messages.age.message)
 })
 
 bot.on('message', async (ctx) => {
@@ -104,14 +116,19 @@ const onClickButton = (id) => {
 
 			if (ctx.session.current_step === 'ABOUT') {
 				const is_model_ready = id === 'know-details-button-0'
-				ctx.session.userData.is_model_ready = is_model_ready
+				ctx.session.userData.is_model_ready = is_model_ready		
 				if (is_model_ready) {
-					ctx.session.current_step = 'CONTACT_ON_TELEGRAM'
-					return ctx.reply(messages.contact_on_telegram.message, Markup.inlineKeyboard(
-						messages.contact_on_telegram.buttons.map((button, index) => {
-							return [Markup.button.callback(button, `contact-button-${index}`)]
-						})
-					))
+					if (ctx.update?.callback_query?.from?.username) {
+						ctx.session.current_step = 'CONTACT_ON_TELEGRAM'
+						return ctx.reply(messages.contact_on_telegram.message, Markup.inlineKeyboard(
+							messages.contact_on_telegram.buttons.map((button, index) => {
+								return [Markup.button.callback(button, `contact-button-${index}`)]
+							})
+						))
+					} else {
+						ctx.session.current_step = 'OTHER_CONTACT'
+						return ctx.reply(messages.without_username.message)
+					}
 				} else {
 					ctx.session.current_step = 1
 					return ctx.replyWithHTML(messages.future.message)
