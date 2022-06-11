@@ -1,5 +1,5 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
-const creds = process.env.GOOGLE_API_CREDS;
+const creds = JSON.parse(process.env.GOOGLE_API_CREDS);
 
 class WriteAnswers {
     async googleSheets(data) {
