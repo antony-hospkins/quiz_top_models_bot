@@ -1,4 +1,4 @@
-const { GoogleSpreadsheet } = require('google-spreadsheet')
+const { GoogleSpreadsheet } = require('google-spreadsheet');
 const creds = require('../.creds.json');
 
 class WriteAnswers {
@@ -9,15 +9,25 @@ class WriteAnswers {
         await doc.loadInfo()
         const sheet = doc.sheetsByIndex[0]
         sheet.addRows([
-            { question: '', answer: '' },
-            { question: 'Имя юзера', answer: `${data.name} [@${data.username}]` },
-            { question: 'Возраст', answer: data.age },
-            { question: 'Желаю проживать в', answer: data.dreamCountry },
-            { question: 'Проживаю в', answer: data.ownCountry },
-            { question: 'Хочу зарабатывать', answer: data.dreamMoney },
-            { question: 'Контент', answer: data.content },
-            { question: 'Интересно?', answer: data.is_model_ready ? 'Да' : 'Нет' },
-            { question: 'Альтернативный способ связи', answer: data.other_contact },
+            {
+                user_name: '',
+                age: '', dream_country: '',
+                current_country: '',
+                want_to_earn: '',
+                content: '',
+                is_interesting: '',
+                another_contact_method: ''
+            },
+            {
+                user_name: `${data.username ? `@${data.username}` : '-'}`,
+                age: data.age,
+                dream_country: data.dreamCountry,
+                current_country: data.ownCountry,
+                want_to_earn: data.dreamMoney,
+                content: data.content,
+                is_interesting: data.is_model_ready ? 'Да' : 'Нет',
+                another_contact_method: data.other_contact ?? '-'
+            },
         ], { insert: true })
     }
 }
