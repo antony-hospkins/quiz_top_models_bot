@@ -1,5 +1,4 @@
 const writeAnswers = require('../src/writeAnswers');
-require('dotenv').config();
 
 const testDataToTable = async () => {
     const result = await writeAnswers.googleSheets({
