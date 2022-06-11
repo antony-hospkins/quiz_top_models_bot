@@ -2,7 +2,6 @@ const fs = require('fs')
 const { Telegraf, Markup } = require('telegraf')
 const LocalSession = require('telegraf-session-local')
 const testDataToTable = require('../tests/testGoogleSheets')
-require('dotenv').config()
 const { messages } = require('./messages/messages')
 const writeAnswers = require('./writeAnswers')
 
