@@ -56,20 +56,28 @@ bot.on('message', async (ctx) => {
 		}
 	
 		if (ctx.session.current_step === 'DREAM_COUNTRY') {
-			ctx.session.userData.dreamCountry = ctx.update?.message?.text
-			ctx.session.current_step = 'OWN_COUNTRY'
-			return ctx.reply(messages.country.message)
+			if (Number(ctx.update?.message?.text)) {
+				return ctx.reply('Мне кажется это не страна 😉')
+			} else {
+				ctx.session.userData.dreamCountry = ctx.update?.message?.text
+				ctx.session.current_step = 'OWN_COUNTRY'
+				return ctx.reply(messages.country.message)
+			}
 		}
 	
 		if (ctx.session.current_step === 'OWN_COUNTRY') {
-			ctx.session.userData.ownCountry = ctx.update?.message?.text
-			ctx.session.current_step = 'DREAM_MONEY'
-			await ctx.replyWithPhoto({ source: messages.dreamMoney.photo })
-			return ctx.reply(messages.dreamMoney.message, Markup.inlineKeyboard(
-				messages.dreamMoney.buttons.map((button, index) => {
-					return [Markup.button.callback(button, `desired-earnings-button-${index}`)]
-				})
-			))
+			if (Number(ctx.update?.message?.text)) {
+				return ctx.reply('Мне кажется это не страна 😉')
+			} else {
+				ctx.session.userData.ownCountry = ctx.update?.message?.text
+				ctx.session.current_step = 'DREAM_MONEY'
+				await ctx.replyWithPhoto({ source: messages.dreamMoney.photo })
+				return ctx.reply(messages.dreamMoney.message, Markup.inlineKeyboard(
+					messages.dreamMoney.buttons.map((button, index) => {
+						return [Markup.button.callback(button, `desired-earnings-button-${index}`)]
+					})
+				))
+			}
 		}
 	
 		if (ctx.session.current_step === 'OTHER_CONTACT') {
@@ -116,7 +124,7 @@ const onClickButton = (id) => {
 
 			if (ctx.session.current_step === 'ABOUT') {
 				const is_model_ready = id === 'know-details-button-0'
-				ctx.session.userData.is_model_ready = is_model_ready		
+				ctx.session.userData.is_model_ready = is_model_ready
 				if (is_model_ready) {
 					if (ctx.update?.callback_query?.from?.username) {
 						ctx.session.current_step = 'CONTACT_ON_TELEGRAM'
